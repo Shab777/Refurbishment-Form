@@ -1,0 +1,594 @@
+Sub CallRefurbishForm()
+
+ RefurbishForm.Show
+
+  
+End Sub
+Sub CallRefurbish_TotalForm()
+
+  TotalForm.Show
+
+End Sub
+Sub Header()
+
+Range(ActiveCell.Offset(, -1), ActiveCell.Offset(, 1)).Select
+  
+    With Selection
+      .RowHeight = 20
+    End With
+ 
+    
+    With Selection
+       .HorizontalAlignment = xlCenter
+       .VerticalAlignment = xlBottom
+    End With
+    
+    With Selection.Font
+      .Bold = True
+      .Italic = True
+      .Size = 14
+   End With
+   
+   With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 13434777
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+
+End Sub
+
+Sub Border()
+
+Dim LastRow As Long
+
+LastRow = ActiveSheet.Cells(Rows.Count, "A").End(xlUp).Row
+
+Range("A3", Cells(LastRow, "C")).Select
+
+Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+
+End Sub
+Sub Reset()
+ Dim Response As Variant
+ 
+ Response = MsgBox("Do you want to reset?", vbYesNo + vbCritical)
+ 
+ If Response = vbYes Then
+
+    ActiveSheet.Range("A:H").Select
+    
+        With Selection
+         .RowHeight = 15
+         .ColumnWidth = 9
+       End With
+    
+       With Selection.Font
+         .Bold = False
+         .Italic = False
+         .Name = "Calibri"
+         .Size = 11
+      End With
+           
+      With Selection.Interior
+            .Pattern = xlNone
+            .TintAndShade = 0
+            .PatternTintAndShade = 0
+      End With
+        
+      With Selection
+         .ClearContents
+      End With
+      
+      With Selection
+            .UnMerge
+      End With
+      
+      With Selection
+        Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+        Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+        Selection.Borders(xlEdgeLeft).LineStyle = xlNone
+        Selection.Borders(xlEdgeTop).LineStyle = xlNone
+        Selection.Borders(xlEdgeBottom).LineStyle = xlNone
+        Selection.Borders(xlEdgeRight).LineStyle = xlNone
+        Selection.Borders(xlInsideVertical).LineStyle = xlNone
+        Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+      End With
+      
+      ElseIf Resopnse = vbNo Then
+      
+        Exit Sub
+        
+      End If
+End Sub
+Sub Edit()
+
+    Dim GrandTotalCell As Variant
+    Dim TotalPaidCell As Variant
+    Dim BalanceDueCell As Variant
+    
+    '===========================================
+    ' Edit Grand Total
+    '==========================================
+    
+    Set GrandTotalCell = ActiveSheet.Range("A1:B1020").Find("Grand Total", LookIn:=xlValues)
+        
+     GrandTotalCell.Select
+     Selection.UnMerge
+     Selection.ClearContents
+    
+     GrandTotalCell.Offset(, 1).Select
+     Selection.Value = "GRAND TOTAL"
+     
+     GrandTotalCell.Offset(, 2).Select
+     Selection.ClearContents
+    
+    
+    '=========================================
+    ' Edit Total Paid
+    '========================================
+    
+    
+     Set TotalPaidCell = ActiveSheet.Range("A1:B1020").Find("Total Paid", LookIn:=xlValues)
+     TotalPaidCell.Select
+     Selection.UnMerge
+     Selection.ClearContents
+     
+     TotalPaidCell.Offset(, 2).Select
+     Selection.ClearContents
+    
+     
+     TotalPaidCell.Offset(, 1).Select
+     Selection.Value = "TOTAL PAID"
+    
+     '============================================
+     ' Edit Balance Due
+     '============================================
+     
+     Set BalanceDueCell = ActiveSheet.Range("A1:B1020").Find("Balance Due", LookIn:=xlValues)
+         
+     BalanceDueCell.Select
+     Selection.UnMerge
+     Selection.ClearContents
+     
+     BalanceDueCell.Offset(, 2).Select
+     Selection.ClearContents
+     
+     BalanceDueCell.Offset(, 1).Select
+     Selection.Value = "BALANCE DUE"
+    
+End Sub
+
+'=======================================================================================
+' Codes for Refurbishment Form
+'=======================================================================================
+Private Sub CmdFormat_Click()
+
+    ' ===================================
+    '    FORMAT DATE CELLS
+    '====================================
+    ActiveSheet.Range("A5:A1020").Select
+        With Selection
+          .HorizontalAlignment = xlLeft
+        End With
+        
+        With Selection
+           .NumberFormat = "dd/mm/yyyy"
+    End With
+    
+    '==================================
+    '  MIDDLE CELLS FORMAT
+    '=================================
+   ActiveSheet.Range("B5", "B1020").Select
+     
+        With Selection
+          .HorizontalAlignment = xlLeft
+        End With
+        
+        With Selection.Font
+          .Italic = True
+          .Size = 11
+    End With
+    
+    '=================================
+    '  CURRENCY CELLS FORMAT
+    '=================================
+     ActiveSheet.Range("C5", "C1020").Select
+         With Selection
+           .HorizontalAlignment = xlRight
+         End With
+         
+         
+        With Selection
+           .NumberFormat = "$#,##0.00"
+    End With
+
+
+    '=====================================
+    '   HEADER 1 FROMAT
+    '====================================
+    Dim MyCell(3) As String
+    Dim j As Integer
+    
+    ActiveSheet.Range("A4:C4").Select
+    ActiveSheet.Range("A4:C4").RowHeight = 34.5
+    
+    With Selection
+     .HorizontalAlignment = xlCenter
+     .VerticalAlignment = xlCenter
+    End With
+    
+    With Selection.Font
+    
+      .Bold = True
+      .Italic = True
+      .Size = 14
+      
+    End With
+    
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 16764108
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    
+    
+    MyCell(1) = "DATE"
+    MyCell(2) = "NAME"
+    MyCell(3) = "AMOUNT"
+    
+    For j = 1 To 3
+      Cells(4, j) = MyCell(j)
+      
+      Next j
+      
+      CmdFormat.Enabled = True
+      
+      Unload Me
+End Sub
+
+Private Sub Reset_Form()
+
+ActiveSheet.Range("A:H").Select
+
+    With Selection
+     .RowHeight = 15
+     .ColumnWidth = 12
+   End With
+
+   With Selection.Font
+     .Bold = False
+     .Italic = False
+     .Name = "Calibri"
+     .Size = 11
+  End With
+       
+  With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+  End With
+    
+  With Selection
+     .ClearContents
+  End With
+  
+  With Selection
+        .UnMerge
+  End With
+  
+  With Selection
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    Selection.Borders(xlEdgeLeft).LineStyle = xlNone
+    Selection.Borders(xlEdgeTop).LineStyle = xlNone
+    Selection.Borders(xlEdgeBottom).LineStyle = xlNone
+    Selection.Borders(xlEdgeRight).LineStyle = xlNone
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+  End With
+
+  Unload Me
+End Sub
+
+
+Private Sub CmdReset_Click()
+
+ActiveSheet.Range("A:H").Select
+
+    With Selection
+     .RowHeight = 15
+     .ColumnWidth = 12
+   End With
+
+   With Selection.Font
+     .Bold = False
+     .Italic = False
+     .Name = "Calibri"
+     .Size = 11
+  End With
+       
+  With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+  End With
+    
+  With Selection
+     .ClearContents
+  End With
+  
+  With Selection
+        .UnMerge
+  End With
+  
+  With Selection
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    Selection.Borders(xlEdgeLeft).LineStyle = xlNone
+    Selection.Borders(xlEdgeTop).LineStyle = xlNone
+    Selection.Borders(xlEdgeBottom).LineStyle = xlNone
+    Selection.Borders(xlEdgeRight).LineStyle = xlNone
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+  End With
+
+  Unload Me
+
+End Sub
+
+Sub TxtDate_Change()
+ 
+ 
+   
+End Sub
+
+Private Sub TxtPropertyName_Change()
+
+    ActiveSheet.Range("A1:C1").Select
+    
+     Selection.Merge
+   Range("A1:C1").RowHeight = 40
+    Range("A1").ColumnWidth = 16
+    Range("B1").ColumnWidth = 42
+    Range("C1").ColumnWidth = 16
+
+    
+    With Selection
+     .HorizontalAlignment = xlCenter
+     .VerticalAlignment = xlBottom
+    End With
+    
+    With Selection.Font
+      .Bold = True
+      .Italic = True
+      .Size = 20
+    End With
+    
+    With Selection
+    
+       .Value = txtPropertyName.Text
+    
+    End With
+    
+     ActiveSheet.Cells(2, 3).Value = [Text(Now(), "DD-MM-YYYY")]
+End Sub
+
+Private Sub UserForm_Initialize()
+'===================================
+'   SWITCH OF THE ALL BUTTONS
+'===================================
+
+ ' CmdHeader1.Enabled = False
+  'cmdTotal.Enabled = False
+  'cmdBalance.Enabled = False
+  'CmdFormat.Enabled = False
+  
+  
+
+End Sub
+
+'=========================================
+' Code for total form
+'========================================
+Option Explicit
+    Dim Total As Double
+    Dim BalanceCell As Variant
+    Dim SumCell As Variant
+    Dim TotalPaidCell As Variant
+    Dim TotalPaid As Double
+    
+Private Sub cmdBalance_Click()
+ '==================================================
+    '  TOTAL PAID CELL & FORMAT
+    '==================================================
+    Set TotalPaidCell = ActiveSheet.Range("A1:B1020").Find("Total Paid", LookIn:=xlValues)
+    'MsgBox TotalPaidCell.Address
+     'MsgBox SumCell.Address
+    Set SumCell = ActiveSheet.Range("A1:B1020").Find("Grand total", LookIn:=xlValues)
+    MsgBox SumCell.Address
+    
+    TotalPaid = WorksheetFunction.Sum(Range(SumCell.Offset(1, 1), TotalPaidCell.Offset(-1, 3)))
+    MsgBox "Total Paid = " & "£" & TotalPaid
+    TotalPaidCell.Offset(, 1).Value = TotalPaid
+    
+    ActiveSheet.Range(TotalPaidCell.Offset(, -1), TotalPaidCell.Offset(, 1)).Select
+     With Selection
+            .RowHeight = 34.5
+            .HorizontalAlignment = xlCenter
+            .VerticalAlignment = xlCenter
+        End With
+        
+        
+        With Selection.Interior
+          .Pattern = xlSolid
+         .PatternColorIndex = xlAutomatic
+          .Color = 16764108
+          .TintAndShade = 0
+          .PatternTintAndShade = 0
+        End With
+        
+    ActiveSheet.Range(TotalPaidCell.Offset(, -1), TotalPaidCell).Merge
+        
+        With Selection.Font
+            .Bold = True
+            .Italic = True
+            .Size = 14
+        End With
+            
+    TotalPaidCell.Offset(, 1).Select
+        
+        With Selection
+        
+            .HorizontalAlignment = xlRight
+        
+        End With
+   
+  '=======================================================
+  '   BALANCE DUE & FORMAT
+  '======================================================
+    Set BalanceCell = ActiveSheet.Range("A1:B1020").Find("Balance Due", LookIn:=xlValues)
+    'MsgBox BalanceCell.Address
+      
+    ActiveSheet.Range(BalanceCell.Offset(, -1), BalanceCell.Offset(, 1)).Select
+        
+        With Selection
+           .RowHeight = 34.5
+           .HorizontalAlignment = xlCenter
+           .VerticalAlignment = xlCenter
+        End With
+        
+        
+        With Selection.Interior
+         .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+         .Color = 16764108
+         .TintAndShade = 0
+         .PatternTintAndShade = 0
+        End With
+        
+        ActiveSheet.Range(BalanceCell.Offset(, -1), BalanceCell).Merge
+        
+        With Selection.Font
+           .Bold = True
+           .Italic = True
+           .Size = 14
+        End With
+           
+        BalanceCell.Offset(, 1).Select
+        
+        With Selection
+        
+           .HorizontalAlignment = xlRight
+        
+        End With
+   
+   
+    BalanceCell.Offset(, 1).Value = Total - TotalPaid
+    
+    '===================================================
+    '    ENABLE BALANCE BUTTON
+    '===================================================
+       cmdBalance.Enabled = True
+       Unload Me
+End Sub
+
+Private Sub cmdTotal_Click()
+'==================================================
+ '       GRAND TOTAL FORMAT
+ '==================================================
+    Set SumCell = ActiveSheet.Range("A1:B1020").Find("Grand total", LookIn:=xlValues)
+   ' MsgBox SumCell.Address
+    'ActiveCell.Value = "GRAND TOTAL"
+    Range(SumCell.Offset(, -1), SumCell.Offset(, 1)).Select
+    
+    With Selection
+        .RowHeight = 34.5
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlCenter
+    End With
+    
+    
+    With Selection.Interior
+      .Pattern = xlSolid
+      .PatternColorIndex = xlAutomatic
+      .Color = 16764108
+      .TintAndShade = 0
+      .PatternTintAndShade = 0
+    End With
+    
+    Range(SumCell.Offset(, -1), SumCell).Merge
+    
+        With Selection.Font
+            .Bold = True
+            .Italic = True
+            .Size = 14
+        End With
+        
+    SumCell.Offset(, 1).Select
+    
+    With Selection
+    
+        .HorizontalAlignment = xlRight
+    
+    End With
+    
+    
+  '===============================================
+  ' TOTAL SUM AND FROMAT CELLS
+  '================================================
+   
+    SumCell.Offset(, 1).Value = WorksheetFunction.Sum(Range("C4", SumCell.Offset(-1, 3)))
+    Total = SumCell.Offset(, 1)
+    
+  
+    
+    MsgBox ("Grand Total= ") & "£" & Total
+    '=================================================
+    ' SWITCH ON THE TOTAL BUTTON
+    '===============================================
+    
+      cmdTotal.Enabled = True
+    
+End Sub
+
